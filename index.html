@@ -176,25 +176,49 @@
   <section id="how">
     <div class="wrap">
       <h2 class="sec">How it works</h2>
-      <p class="seclead">Three stages. The first two are fully local — only clean, extracted tasks ever leave your machine.</p>
+      <p class="seclead">From a mic on your body to a task board that executes itself. The capture and processing are fully local — only clean, extracted tasks ever leave your machine.</p>
       <div class="flow">
         <div class="step">
-          <span class="n">1</span><span class="loc">Local</span>
-          <h3>🎧 Whisper</h3>
-          <p>Your speech becomes text on-device. Nothing is uploaded, ever.</p>
+          <span class="n">1</span><span class="loc">Wear</span>
+          <h3>🎙️ Wearable mic</h3>
+          <p>You wear a microphone. It streams your day's audio to your phone — hands-free, always on.</p>
         </div>
         <div class="arrow">→</div>
         <div class="step">
-          <span class="n">2</span><span class="loc">Local</span>
-          <h3>🧠 Local model</h3>
-          <p>Diarizes who said what (voice + male/female timbre), tags importance, cuts the stream into tasks, enriches a vector DB, and builds your board.</p>
+          <span class="n">2</span><span class="loc">iPhone</span>
+          <h3>📱 Swift app</h3>
+          <p>A native iOS app receives the audio and relays it onward — to your own Mac mini over an encrypted <b>Tailscale + WSS</b> tunnel. Nothing hits the public internet in the clear.</p>
+        </div>
+        <div class="arrow">→</div>
+        <div class="step">
+          <span class="n">3</span><span class="loc">Mac · Local</span>
+          <h3>🧠 Preprocess</h3>
+          <p>On your Mac mini: <b>Whisper</b> transcribes, then a <b>local AI model</b> diarizes who said what (voice + male/female timbre), tags importance, and cuts the stream into tasks.</p>
+        </div>
+        <div class="arrow">→</div>
+        <div class="step">
+          <span class="n">4</span><span class="loc">Mac · Local</span>
+          <h3>🗄️ Knowledge + board</h3>
+          <p>Everything fills a local <b>knowledge DB</b> (vector memory) and a <b>task board</b> — grouped, prioritized, and searchable. Still fully on your machine.</p>
         </div>
         <div class="arrow">→</div>
         <div class="step exec">
-          <span class="n">3</span><span class="loc">Gonka</span>
-          <h3>⚡ Kimi-K2.6</h3>
-          <p>Decentralized open-weight AI executes the tasks. Paid in GNK. The only stage that touches the network — and only with clean, redacted tasks.</p>
+          <span class="n">5</span><span class="loc">Gonka</span>
+          <h3>⚡ Kimi-K2.6 executes</h3>
+          <p>The board gets done by <b>Gonka</b> models (open-weight Kimi-K2.6), paid in GNK. The only stage that touches the network — and only with clean, redacted tasks.</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="control" style="background:#0d1119;border-top:1px solid var(--line)">
+    <div class="wrap">
+      <h2 class="sec">Control it your way</h2>
+      <p class="seclead">forkme.ai runs in tandem with an <b>OpenClaw bot</b> (powered by your local AI + Gonka). Check in by text, or watch everything live on a dashboard.</p>
+      <div class="grid">
+        <div class="card"><div class="ico">🤖</div><h3>OpenClaw bot</h3><p>The whole pipeline works in tandem with an OpenClaw agent bot — running on your local model plus Gonka — so tasks can be orchestrated, delegated, and acted on automatically.</p></div>
+        <div class="card"><div class="ico">💬</div><h3>Telegram bot</h3><p>Message a Telegram bot in plain text to ask for status, pull info on any task, or query your knowledge base — answered by OpenClaw on local AI + Gonka.</p></div>
+        <div class="card"><div class="ico">📊</div><h3>Live dashboard</h3><p>See the whole project visually: what tasks exist, what stage they're in, which agents are running, and what's happening across the pipeline in real time.</p></div>
       </div>
     </div>
   </section>
