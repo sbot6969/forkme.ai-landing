@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>forkme.ai — Speak your day. The work gets done.</title>
+  <meta name="description" content="forkme.ai keeps a private mic running, turns your day's speech into a task board locally, and executes the work on decentralized AI (Gonka Kimi-K2.6). Fully open source. Works with OpenClaw plugins. Your raw voice never leaves your machine." />
+  <meta property="og:title" content="forkme.ai — Voice → Tasks, executed by decentralized AI" />
+  <meta property="og:description" content="Local-first voice second brain. Whisper → local model → Gonka Kimi-K2.6. Fully open source, powered by Gonka AI." />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#0b0e13" />
+  <style>
+    :root{
+      --bg:#0b0e13; --panel:#141922; --panel2:#0f141c; --line:#232b38; --text:#f3f6fb; --muted:#9aa6b6;
+      --accent:#57d6a1; --blue:#73a7ff; --violet:#a48bff; --grad:linear-gradient(90deg,#57d6a1,#73a7ff);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    a{color:var(--blue);text-decoration:none}
+    .wrap{width:min(1080px,92%);margin:0 auto}
+    .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+
+    /* nav */
+    nav{position:sticky;top:0;z-index:20;backdrop-filter:blur(12px);background:rgba(11,14,19,.72);border-bottom:1px solid var(--line)}
+    nav .wrap{display:flex;align-items:center;justify-content:space-between;padding:13px 0}
+    .brand{font-weight:900;font-size:19px;letter-spacing:-.5px}
+    .brand .dot{color:var(--accent)}
+    .nav-links{display:flex;align-items:center;gap:22px}
+    .nav-links a{color:var(--muted);font-size:14px}
+    .nav-links a:hover{color:var(--text)}
+    .nav-cta{padding:8px 16px;border-radius:9px;background:var(--grad);color:#06121f !important;font-weight:800;font-size:14px}
+    @media(max-width:680px){.nav-links a.hidem{display:none}}
+
+    /* powered-by strip under nav */
+    .powered{border-bottom:1px solid var(--line);background:var(--panel2)}
+    .powered .wrap{display:flex;align-items:center;gap:10px;justify-content:center;padding:9px 0;font-size:12px;color:var(--muted);flex-wrap:wrap}
+    .powered b{color:var(--text)}
+    .powered .chip{border:1px solid var(--line);border-radius:999px;padding:3px 10px;color:var(--muted)}
+
+    /* hero */
+    .hero{text-align:center;padding:92px 0 40px;background:radial-gradient(120% 90% at 50% -10%,#182234 0%,#0b0e13 62%);position:relative}
+    .hero h1{font-size:clamp(40px,7.5vw,74px);font-weight:900;letter-spacing:-2px;line-height:1.02}
+    .hero .tag{font-size:clamp(17px,2.6vw,23px);margin-top:20px;font-weight:600}
+    .hero .sub{font-size:16px;color:var(--muted);max-width:660px;margin:16px auto 32px}
+    .cta{display:inline-flex;gap:12px;flex-wrap:wrap;justify-content:center}
+    .btn{padding:13px 24px;border-radius:11px;font-weight:800;font-size:15px;border:1px solid var(--line);transition:transform .12s}
+    .btn.primary{background:var(--grad);color:#06121f;border:none}
+    .btn.ghost{background:var(--panel2);color:var(--text)}
+    .btn:hover{transform:translateY(-2px)}
+
+    /* marquee */
+    .marquee{margin-top:46px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:linear-gradient(180deg,#0e131b,#0b0e13);overflow:hidden;position:relative}
+    .marquee::before,.marquee::after{content:"";position:absolute;top:0;bottom:0;width:80px;z-index:2;pointer-events:none}
+    .marquee::before{left:0;background:linear-gradient(90deg,#0b0e13,transparent)}
+    .marquee::after{right:0;background:linear-gradient(270deg,#0b0e13,transparent)}
+    .mq-label{text-align:center;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);padding:12px 0 4px}
+    .track{display:flex;gap:0;width:max-content;animation:scroll 32s linear infinite;padding:12px 0 16px}
+    .marquee:hover .track{animation-play-state:paused}
+    .mq-item{display:flex;align-items:center;gap:9px;padding:0 26px;font-weight:700;font-size:15px;color:var(--text);white-space:nowrap;border-right:1px solid rgba(255,255,255,.05)}
+    .mq-item small{color:var(--muted);font-weight:500;font-size:12px}
+    .mq-item .ic{font-size:17px}
+    @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+    /* sections */
+    section{padding:66px 0}
+    h2.sec{font-size:clamp(24px,4vw,32px);font-weight:900;text-align:center;letter-spacing:-.5px}
+    p.seclead{text-align:center;color:var(--muted);max-width:640px;margin:12px auto 40px;font-size:16px}
+
+    /* flow */
+    .flow{display:flex;align-items:stretch;justify-content:center;gap:12px;flex-wrap:wrap}
+    .step{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px;max-width:300px;flex:1 1 230px;position:relative}
+    .step.exec{border-color:var(--accent);box-shadow:0 0 0 1px rgba(87,214,161,.22),0 10px 40px -20px rgba(87,214,161,.5)}
+    .step .n{position:absolute;top:-13px;left:-13px;width:30px;height:30px;border-radius:50%;background:var(--blue);color:#06121f;font-weight:900;display:flex;align-items:center;justify-content:center;font-size:14px}
+    .step.exec .n{background:var(--accent)}
+    .step .loc{position:absolute;top:16px;right:16px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 8px}
+    .step.exec .loc{color:var(--accent);border-color:var(--accent)}
+    .step h3{font-size:17px;margin:4px 0 8px}
+    .step p{font-size:13.5px;color:var(--muted)}
+    .arrow{align-self:center;color:var(--muted);font-size:26px}
+
+    /* features */
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
+    .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px;transition:border-color .15s,transform .15s}
+    .card:hover{border-color:#33405480;transform:translateY(-3px)}
+    .card .ico{font-size:26px}
+    .card h3{font-size:16px;margin:12px 0 7px}
+    .card p{font-size:14px;color:var(--muted)}
+
+    /* stats */
+    .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;text-align:center}
+    .stat{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:22px}
+    .stat b{display:block;font-size:30px;font-weight:900}
+    .stat span{color:var(--muted);font-size:13px}
+
+    /* band */
+    .band{background:linear-gradient(135deg,#101722,#0d1119);border-top:1px solid var(--line);border-bottom:1px solid var(--line);text-align:center}
+    .band h2{font-size:clamp(22px,4vw,30px);font-weight:900}
+    .band p{color:var(--muted);max-width:600px;margin:12px auto 0;font-size:15px}
+
+    /* opensource band */
+    .os .grid2{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center}
+    @media(max-width:760px){.os .grid2{grid-template-columns:1fr}}
+    .code{background:#0a0d12;border:1px solid var(--line);border-radius:12px;padding:18px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;color:#c8d3e0;overflow:auto}
+    .code .c{color:#5b6b7d}
+    .code .a{color:var(--accent)}
+
+    /* footer */
+    footer{padding:44px 0;border-top:1px solid var(--line);text-align:center}
+    footer .made{font-size:16px;font-weight:700}
+    footer .links{margin-top:10px;color:var(--muted);font-size:14px}
+    footer .links a{margin:0 8px}
+    .pill{display:inline-block;font-size:12px;color:var(--muted);background:var(--panel2);border:1px solid var(--line);border-radius:999px;padding:5px 12px;margin:4px}
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="wrap">
+      <span class="brand">forkme<span class="dot">.ai</span></span>
+      <div class="nav-links">
+        <a class="hidem" href="#how">How it works</a>
+        <a class="hidem" href="#features">Features</a>
+        <a class="hidem" href="#opensource">Open source</a>
+        <a class="nav-cta" href="https://github.com/sbot6969/forkme.ai" target="_blank" rel="noopener">View Source ↗</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="powered">
+    <div class="wrap">
+      <span>⚡ <b>Powered by Gonka AI</b></span>
+      <span class="chip">Fully open source</span>
+      <span class="chip">Works with OpenClaw plugins</span>
+      <span class="chip">Local-first &amp; private</span>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="wrap">
+      <h1>Speak your day.<br /><span class="g">The work gets done.</span></h1>
+      <p class="tag">A private mic runs in the background. Your machine turns speech into a task board —<br />and decentralized AI executes it.</p>
+      <p class="sub">Whisper transcribes locally. A local model tags who said what, cuts your stream into tasks, and builds your board. Then Gonka's open-weight <b>Kimi-K2.6</b> does the actual work — paid in GNK. Your raw voice never leaves your computer.</p>
+      <div class="cta">
+        <a class="btn primary" href="https://github.com/sbot6969/forkme.ai" target="_blank" rel="noopener">🚀 Launch / View Source</a>
+        <a class="btn ghost" href="#how">See how it works</a>
+      </div>
+    </div>
+
+    <!-- MARQUEE: modules / projects / tools used -->
+    <div class="marquee">
+      <div class="mq-label">Built with · Modules &amp; projects it uses</div>
+      <div class="track" id="track">
+        <div class="mq-item"><span class="ic">🎧</span> Whisper <small>local STT</small></div>
+        <div class="mq-item"><span class="ic">⚡</span> Gonka AI <small>Kimi-K2.6 execution</small></div>
+        <div class="mq-item"><span class="ic">🧠</span> Anthropic Claude <small>optional cloud</small></div>
+        <div class="mq-item"><span class="ic">🦙</span> Qwen · Ollama <small>local preprocessing</small></div>
+        <div class="mq-item"><span class="ic">🔊</span> SpeechBrain ECAPA <small>voiceprint</small></div>
+        <div class="mq-item"><span class="ic">🧩</span> OpenClaw <small>agent plugins</small></div>
+        <div class="mq-item"><span class="ic">🗄️</span> SQLite · Chroma <small>local memory</small></div>
+        <div class="mq-item"><span class="ic">🌐</span> Tailscale <small>secure proxy</small></div>
+        <div class="mq-item"><span class="ic">🍎</span> FastAPI · SwiftUI <small>backend + iOS</small></div>
+        <!-- duplicate for seamless loop -->
+        <div class="mq-item"><span class="ic">🎧</span> Whisper <small>local STT</small></div>
+        <div class="mq-item"><span class="ic">⚡</span> Gonka AI <small>Kimi-K2.6 execution</small></div>
+        <div class="mq-item"><span class="ic">🧠</span> Anthropic Claude <small>optional cloud</small></div>
+        <div class="mq-item"><span class="ic">🦙</span> Qwen · Ollama <small>local preprocessing</small></div>
+        <div class="mq-item"><span class="ic">🔊</span> SpeechBrain ECAPA <small>voiceprint</small></div>
+        <div class="mq-item"><span class="ic">🧩</span> OpenClaw <small>agent plugins</small></div>
+        <div class="mq-item"><span class="ic">🗄️</span> SQLite · Chroma <small>local memory</small></div>
+        <div class="mq-item"><span class="ic">🌐</span> Tailscale <small>secure proxy</small></div>
+        <div class="mq-item"><span class="ic">🍎</span> FastAPI · SwiftUI <small>backend + iOS</small></div>
+      </div>
+    </div>
+  </header>
+
+  <section id="how">
+    <div class="wrap">
+      <h2 class="sec">How it works</h2>
+      <p class="seclead">Three stages. The first two are fully local — only clean, extracted tasks ever leave your machine.</p>
+      <div class="flow">
+        <div class="step">
+          <span class="n">1</span><span class="loc">Local</span>
+          <h3>🎧 Whisper</h3>
+          <p>Your speech becomes text on-device. Nothing is uploaded, ever.</p>
+        </div>
+        <div class="arrow">→</div>
+        <div class="step">
+          <span class="n">2</span><span class="loc">Local</span>
+          <h3>🧠 Local model</h3>
+          <p>Diarizes who said what (voice + male/female timbre), tags importance, cuts the stream into tasks, enriches a vector DB, and builds your board.</p>
+        </div>
+        <div class="arrow">→</div>
+        <div class="step exec">
+          <span class="n">3</span><span class="loc">Gonka</span>
+          <h3>⚡ Kimi-K2.6</h3>
+          <p>Decentralized open-weight AI executes the tasks. Paid in GNK. The only stage that touches the network — and only with clean, redacted tasks.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" style="background:#0d1119;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+    <div class="wrap">
+      <h2 class="sec">What makes it different</h2>
+      <p class="seclead">A second brain that hears context, extracts work, and gets it done — without handing your life to a cloud provider.</p>
+      <div class="grid">
+        <div class="card"><div class="ico">🔒</div><h3>Secrets never leave</h3><p>A double-redaction barrier blocks seed phrases, private keys, cards, and passwords before anything is sent out. Critical secrets hard-stop locally.</p></div>
+        <div class="card"><div class="ico">👥</div><h3>Knows who's talking</h3><p>Local voiceprint (SpeechBrain ECAPA) recognizes owner vs. others, plus male/female timbre — tasks are attributed to the right speaker.</p></div>
+        <div class="card"><div class="ico">🎙️</div><h3>Always-on, legal</h3><p>Native iOS app captures in the background over an encrypted Tailscale tunnel to your own Mac. The orange mic indicator stays on — you're always in control.</p></div>
+        <div class="card"><div class="ico">⚡</div><h3>Cheap execution</h3><p>Tasks run on Gonka's open-weight Kimi-K2.6, billed in GNK at network cost — a fraction of centralized API prices.</p></div>
+        <div class="card"><div class="ico">🧩</div><h3>OpenClaw plugins</h3><p>Ships an OpenClaw plugin exposing ingest / memory-search / task-board / orchestrator tools, so your agents plug straight in.</p></div>
+        <div class="card"><div class="ico">🛠️</div><h3>Run from scratch</h3><p>Fully open source. One-command install on a clean Mac mini. Your data, your machine, your keys.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="stats">
+        <div class="stat"><b class="g">3</b><span>stages · 2 fully local</span></div>
+        <div class="stat"><b class="g">0</b><span>secrets sent to cloud</span></div>
+        <div class="stat"><b class="g">GNK</b><span>pay-per-task on Gonka</span></div>
+        <div class="stat"><b class="g">100%</b><span>open source</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="opensource" class="os band">
+    <div class="wrap">
+      <h2 class="sec">Fully open source</h2>
+      <p class="seclead">Clone it, read it, run it. Human-readable README, agent-readable docs, and a one-command installer.</p>
+      <div class="grid2" style="text-align:left">
+        <div>
+          <p style="color:var(--muted);margin-bottom:14px">Everything is on GitHub — the FastAPI backend, the local pipeline, the OpenClaw plugin, and the native iOS app. No personal data, no private keys: just the engine, ready to run on your own machine.</p>
+          <div class="cta">
+            <a class="btn primary" href="https://github.com/sbot6969/forkme.ai" target="_blank" rel="noopener">View Source on GitHub ↗</a>
+          </div>
+        </div>
+        <div class="code"><span class="c"># clone &amp; run from scratch</span><br/>git clone https://github.com/sbot6969/forkme.ai<br/>cd forkme.ai<br/><span class="a">./scripts/install.sh</span>  <span class="c"># one command</span><br/><br/><span class="c"># open the recorder</span><br/>https://localhost:8788</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" style="background:none;border:none">
+    <div class="wrap">
+      <h2>Private by architecture, not by promise</h2>
+      <p>Raw audio, transcripts, memory, vectors, and audit logs stay on your computer. The local model never executes tasks — it only organizes text. Gonka is the only execution backend, and it only ever sees clean, redacted tasks.</p>
+      <div style="margin-top:22px">
+        <span class="pill">🔒 Local-first</span>
+        <span class="pill">⚡ Powered by Gonka AI</span>
+        <span class="pill">🧩 OpenClaw plugins</span>
+        <span class="pill">🧠 Open-weight models</span>
+        <span class="pill">📖 Fully open source</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <p class="made">Made by <a href="https://x.com/sepezho" target="_blank" rel="noopener">@sepezho</a></p>
+      <p class="links">
+        <a href="https://github.com/sbot6969/forkme.ai" target="_blank" rel="noopener">GitHub</a> ·
+        <a href="https://x.com/sepezho" target="_blank" rel="noopener">Twitter / X</a> ·
+        <a href="https://gonka.ai" target="_blank" rel="noopener">Powered by Gonka AI</a>
+      </p>
+      <p style="color:var(--muted);font-size:12px;margin-top:12px">forkme.ai — voice → tasks, executed by decentralized AI · Local-first · Open source</p>
+    </div>
+  </footer>
+</body>
+</html>
